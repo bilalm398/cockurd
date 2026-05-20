@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo up.png">
+    <title>هێزە باوەکان - ClashFox</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            direction: rtl;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        .header { text-align: center; margin-bottom: 3rem; }
+        .title { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .title-red { color: #ef4444; }
+        .subtitle { color: #9ca3af; }
+
+        .army-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .army-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .army-card:hover { transform: translateY(-5px); border-color: #ef4444; }
+
+        .rank { color: #f97316; font-weight: bold; font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .army-name { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; color: #fff; }
+
+        /* Troop Badges Styling */
+        .units-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .unit-badge {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .unit-count {
+            color: #fb923c;
+            font-weight: bold;
+            background: rgba(0,0,0,0.3);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .btn-copy {
+            background: #ef4444;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: 0.2s;
+    font-weight: 600;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+        .btn-copy:hover { background: #dc2626; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn">← گەڕانەوە</a>
+        <div class="header">
+            <span class="title-orange"><img src="./logo.png" alt="ClashFox" style="vertical-align: middle; height: 1em; margin-left: 10px; width: 130px; height: 50px;"></span><br>
+            <h1 class="title"><span class="title-red"></span> ستراتیجیە باوەکان</h1> 
+            <p class="subtitle">بەهێزترین ستراتیجییەکان </p>
+        </div>
+
+        <div class="army-grid" id="armyGrid">
+            <p style="text-align:center; grid-column: 1/-1;">لە حاڵەتی بارکردندایە...</p>
+        </div>
+    </div>
+
+<script>
+const API_URL = "https://clashfox.com/api/trending-armies?days=7&limit=20";
+
+async function loadArmies() {
+    try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        renderArmies(data.results || []);
+    } catch (err) {
+        document.getElementById("armyGrid").innerHTML = "<p>هەڵەیەک ڕوویدا لە هێنانی زانیارییەکان</p>";
+    }
+}
+
+function renderArmies(armies) {
+    const grid = document.getElementById("armyGrid");
+    if (armies.length === 0) {
+        grid.innerHTML = "<p>هیچ سوپایەک نەدۆزرایەوە</p>";
+        return;
+    }
+
+    grid.innerHTML = armies.map((army, index) => {
+        // Create badges for each troop
+        const unitsList = (army.army_units || []).map(unit => `
+            <div class="unit-badge">
+                <span class="unit-name">${unit.name || 'هێز'}</span>
+                <span class="unit-count">x${unit.amount || 0}</span>
+            </div>
+        `).join('');
+
+        return `
+            <div class="army-card">
+                <div class="rank">#${index + 1}</div>
+                <div class="army-name">${army.name || "سوپای بێ ناو"}</div>
+                
+                <div class="units-container">
+                    ${unitsList}
+                </div>
+
+                <a href="${army.source_link || '#'}" target="_blank" class="btn-copy">
+                    Copy Army / کۆپی بکە
+                </a>
+            </div>
+        `;
+    }).join('');
+}
+
+loadArmies();
+</script>
+</body>
+</html>

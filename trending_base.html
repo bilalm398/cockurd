@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo up.png">
+    <title>بنکە باوەکان - ClashFox</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+        
+        /* Background Image Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+        
+        .title-orange {
+            color: #fb923c;
+        }
+        
+        .title-white {
+            color: #fff;
+        }
+        
+        .subtitle {
+            font-size: 1.125rem;
+            color: #e5e7eb;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+        
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .nav-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: inherit;
+        }
+        
+        .nav-tab.active {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+        }
+        
+        .nav-tab.inactive {
+            background: rgba(255, 255, 255, 0.05);
+            color: #9ca3af;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-tab.inactive:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        .nav-tab svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .time-filters {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .time-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.05);
+            color: #9ca3af;
+        }
+        
+        .time-btn.active {
+            background: #fff;
+            color: #1a1a2e;
+        }
+        
+        .time-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        .refresh-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transform: rotate(180deg);
+        }
+        
+        .refresh-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* Bases Grid */
+        .bases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        /* Base Card */
+        .base-card {
+            background: rgba(15, 15, 30, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .base-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(251, 146, 60, 0.3);
+        }
+        
+        /* Card Image Container */
+        .card-image-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+        }
+        
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .rank-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.5);
+            z-index: 2;
+        }
+        
+        .hot-badge {
+            position: absolute;
+            top: 1rem;
+            left: 3.5rem;
+            padding: 0.35rem 0.75rem;
+            background: rgba(234, 88, 12, 0.9);
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+        
+        /* Card Content */
+        .card-content {
+            padding: 1.25rem;
+        }
+        
+        .base-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .base-type {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #d1d5db;
+        }
+        
+        .base-type svg {
+            width: 18px;
+            height: 18px;
+            color: #fbbf24;
+        }
+        
+        .match-percentage {
+            text-align: left;
+        }
+        
+        .match-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fbbf24;
+            line-height: 1;
+        }
+        
+        .match-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.875rem;
+            border-radius: 0.75rem;
+        }
+        
+        .stat-label {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            font-weight: 600;
+            margin-bottom: 0.375rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-label svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to left, #06b6d4 0%, #f97316 50%, #f97316 100%);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0.75rem;
+        }
+        
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            border-radius: 0.75rem;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            color: #d1d5db;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .bases-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .nav-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .nav-tabs {
+                justify-content: center;
+            }
+            
+           
+            
+            .bases-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-image-container {
+                height: 240px;
+           
+            }
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+.back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: 0.2s;
+    font-weight: 600;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← گەڕانەوە</a>
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">
+                <span class="title-orange"><img src="./logo.png" alt="ClashFox" style="vertical-align: middle; height: 1em; margin-left: 10px;"></span><br>
+                <span class="title-white">بەیسە باوەکان</span>
+            </h1>
+            <p class="subtitle">باسترین و بەهێزترین بەیسەکانی Clash of Clans لەم ٧ ڕۆژەی ڕابردوودا</p>
+        </div>
+
+        <!-- Navigation Bar -->
+        <div class="nav-bar">
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showTab('bases')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    گەڕانی بەیس
+                </button>
+                <button class="nav-tab inactive" onclick="showTab('attack')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                   دۆزینەوەی ستراتیجی                </button>
+            </div>
+            
+            
+        </div>
+
+        <!-- Bases Grid -->
+        <div class="bases-grid" id="basesGrid"> </div>
+        <div class="bases-grid" id="attackGrid" style="display:none"></div>
+           
+        
+    </div>
+<script>
+    const BASE_API = "https://clashfox.com/api/trending-bases?type=base&days=7&limit=20";
+    const ATTACK_API = "https://clashfox.com/api/trending-bases?type=attack&days=7&limit=20";
+
+const basesGrid = document.getElementById("basesGrid");
+const attackGrid = document.getElementById("attackGrid");
+
+function toArabic(num) {
+    return num.toString().replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+}
+
+// ================= LOAD BASES =================
+async function loadBases() {
+    basesGrid.innerHTML = "<p style='text-align:center'>Loading...</p>";
+
+    try {
+        const res = await fetch(BASE_API);
+        const data = await res.json();
+        renderBases(data.results);
+    } catch (err) {
+        basesGrid.innerHTML = "<p style='color:red;text-align:center'>API Error</p>";
+    }
+}
+
+function renderBases(bases) {
+    basesGrid.innerHTML = "";
+
+    bases.forEach((base, index) => {
+        const rank = index + 1;
+        const image = "https://clashfox.com" + base.image_url;
+        const match = base.avg_similarity.toFixed(1);
+
+        const card = document.createElement("div");
+        card.className = "base-card";
+
+        card.innerHTML = `
+            <div class="card-image-container">
+                <img src="${image}" class="card-image" />
+                <div class="rank-badge">${toArabic(rank)}</div>
+                ${rank <= 3 ? `<div class="hot-badge">HOT</div>` : ""}
+            </div>
+
+            <div class="card-content">
+                <div class="base-header">
+                    <div class="base-type">TH18 BASE</div>
+                    <div class="match-value">${toArabic(match)}%</div>
+                </div>
+
+                <div class="action-buttons">
+                    <a class="btn-primary" href="${base.url}" target="_blank">کۆپیکردن</a>
+                </div>
+            </div>
+        `;
+
+        basesGrid.appendChild(card);
+    });
+}
+
+// ================= LOAD ATTACKS =================
+async function loadAttacks() {
+    attackGrid.innerHTML = "<p style='text-align:center'>Loading...</p>";
+
+    try {
+        const res = await fetch(ATTACK_API);
+        const data = await res.json();
+        renderAttacks(data.results);
+    } catch (err) {
+        attackGrid.innerHTML = "<p style='color:red;text-align:center'>API Error</p>";
+    }
+}
+function renderAttacks(items) {
+    attackGrid.innerHTML = "";
+
+    items.forEach((base, index) => {
+        const rank = index + 1;
+
+        // YouTube thumbnail fix
+        const videoId = base.url.split("v=")[1]?.split("&")[0];
+
+        const image = videoId
+            ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+            : "https://clashfox.com/default.jpg";
+
+        const match = base.avg_similarity.toFixed(1);
+
+        const card = document.createElement("div");
+        card.className = "base-card";
+
+        card.innerHTML = `
+            <div class="card-image-container">
+                <img src="${image}" class="card-image" />
+                <div class="rank-badge">${toArabic(rank)}</div>
+                ${rank <= 3 ? `<div class="hot-badge">ATTACK</div>` : ""}
+            </div>
+
+            <div class="card-content">
+                <div class="base-header">
+                    <div class="base-type">${base.youtuber || "Attack Video"}</div>
+                    <div class="match-value">${toArabic(match)}%</div>
+                </div>
+
+                <div class="action-buttons">
+                    <a class="btn-primary" href="${base.url}" target="_blank">
+                        سەیرکردن
+                    </a>
+                </div>
+            </div>
+        `;
+
+        attackGrid.appendChild(card);
+    });
+}
+
+// ================= TAB SWITCH =================
+function showTab(type) {
+    const baseTab = document.querySelectorAll(".nav-tab")[0];
+    const attackTab = document.querySelectorAll(".nav-tab")[1];
+
+    if (type === "bases") {
+        basesGrid.style.display = "grid";
+        attackGrid.style.display = "none";
+
+        baseTab.classList.add("active");
+        baseTab.classList.remove("inactive");
+
+        attackTab.classList.add("inactive");
+        attackTab.classList.remove("active");
+
+        loadBases();
+    } else {
+        basesGrid.style.display = "none";
+        attackGrid.style.display = "grid";
+
+        attackTab.classList.add("active");
+        attackTab.classList.remove("inactive");
+
+        baseTab.classList.add("inactive");
+        baseTab.classList.remove("active");
+
+        loadAttacks();
+    }
+}
+
+
+// default load
+loadBases();
+</script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo up.png">
+    <title>گەڕانی بنکە - ClashFox</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+        
+        /* Background Image Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+        
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+        
+        .title-orange {
+            color: #fb923c;
+        }
+        
+        .title-white {
+            color: #fff;
+        }
+        
+        .subtitle {
+            font-size: 1.125rem;
+            color: #e5e7eb;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+        
+        .description {
+            font-size: 0.95rem;
+            color: #9ca3af;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Main Card */
+        .main-card {
+            background: rgba(15, 15, 30, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed rgba(251, 146, 60, 0.4);
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: rgba(251, 146, 60, 0.03);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .upload-area:hover {
+            border-color: #fb923c;
+            background: rgba(251, 146, 60, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .upload-area.dragover {
+            border-color: #fbbf24;
+            background: rgba(251, 191, 36, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .upload-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.25rem;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.4);
+        }
+        
+        .upload-icon {
+            width: 40px;
+            height: 40px;
+            color: #fff;
+        }
+        
+        .upload-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .description {
+                font-size: 0.875rem;
+            }
+            
+            .main-card {
+                padding: 1.5rem;
+            }
+            
+            .upload-area {
+                padding: 2rem 1rem;
+            }
+            
+            .upload-icon-wrapper {
+                width: 65px;
+                height: 65px;
+            }
+            
+            .upload-icon {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .upload-text {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Hidden preview area */
+        .preview-container {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .preview-container.active {
+            display: block;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 0.5rem;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .preview-filename {
+            text-align: center;
+            margin-top: 0.75rem;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+        
+        .remove-btn {
+            display: block;
+            margin: 0.75rem auto 0;
+            padding: 0.5rem 1.25rem;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 0.5rem;
+            color: #fca5a5;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        
+        .remove-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: 0.2s;
+    font-weight: 600;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <a href="index.html" class="back-btn">← گەڕانەوە</a>
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">
+                <span class="title-orange"><img src="./logo.png" alt="ClashFox" style="vertical-align: middle; height: 1em; margin-left: 10px;"></span><br>
+                <span class="title-white">دۆزینەوەی بەیس لەڕێگەی سکرینشۆت</span>
+            </h1>
+            <p class="subtitle">وێنەیەکی سکرینشۆتی هەر بەیسێکی Clash of Clans ئەپلۆد بکە و لینکی بەیسەکە بەدەست بێنە.</p>
+            
+        </div>
+
+        <!-- Main Card -->
+        <div class="main-card">
+            <!-- Upload Area -->
+            <div class="upload-area" id="upload-area">
+                <input type="file" id="file-input" accept="image/*">
+                
+                <div class="upload-icon-wrapper">
+                    <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                </div>
+                
+                <div class="upload-text">ڕاکێشان و دانان یان کرتە بکە بۆ بارکردن</div>
+            </div>
+
+            <!-- Preview Container -->
+            <div class="preview-container" id="preview-container">
+                <img src="" alt="پیشاندانی وێنە" class="preview-image" id="preview-image">
+                <div class="preview-filename" id="filename"></div>
+                <button class="remove-btn" id="remove-btn">سڕینەوەی وێنەکە</button>
+            </div>
+
+                        <!-- Loading -->
+            <div id="loading" style="display:none; text-align:center; margin-top:20px;">
+                <p style="color:#fbbf24;">گەڕان بەردەوامە...</p>
+            </div>
+
+            <!-- Results -->
+            <div id="results" style="margin-top:20px;"></div>
+
+
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const previewContainer = document.getElementById('preview-container');
+        const previewImage = document.getElementById('preview-image');
+        const filenameDiv = document.getElementById('filename');
+        const removeBtn = document.getElementById('remove-btn');
+
+        // Click to upload
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag and drop events
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('image/')) {
+                handleFile(files[0]);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        // Handle file
+        async function handleFile(file) {
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+        previewImage.src = e.target.result;
+        filenameDiv.textContent = `فایل: ${file.name}`;
+        previewContainer.classList.add('active');
+        uploadArea.style.display = 'none';
+
+        // Show loading
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('results').innerHTML = '';
+
+        try {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const response = await fetch('https://clashfox.com/api/search-base', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            document.getElementById('loading').style.display = 'none';
+
+            showResults(data.matches);
+
+        } catch (error) {
+            document.getElementById('loading').style.display = 'none';
+
+            document.getElementById('results').innerHTML = `
+                <p style="color:red; text-align:center;">
+                    هەڵەیەک ڕوویدا
+                </p>
+            `;
+
+            console.error(error);
+        }
+    };
+
+    reader.readAsDataURL(file);
+}
+
+function showResults(matches) {
+
+    const resultsDiv = document.getElementById('results');
+
+    if (!matches || matches.length === 0) {
+        resultsDiv.innerHTML = `
+            <p style="text-align:center; color:#aaa;">
+                هیچ بنکەیەک نەدۆزرایەوە
+            </p>
+        `;
+        return;
+    }
+
+    let html = '';
+
+    matches.forEach(match => {
+
+        html += `
+            <div style="
+                background: rgba(255,255,255,0.05);
+                border-radius: 16px;
+                padding: 16px;
+                margin-bottom: 16px;
+                border: 1px solid rgba(255,255,255,0.1);
+            ">
+
+                <p style="margin-bottom:10px;">
+                    🎯 هاوشێوەی:
+                    <strong>${match.similarity}%</strong>
+                </p>
+
+                <p style="margin-bottom:10px;">
+                    📺 یوتیوبەر:
+                    <strong>${match.youtuber_name}</strong>
+                </p>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+
+                    <a href="${match.base_link}"
+                       target="_blank"
+                       style="
+                        background:#f59e0b;
+                        color:white;
+                        padding:10px 14px;
+                        border-radius:10px;
+                        text-decoration:none;
+                        font-weight:bold;
+                       ">
+                       📋 کۆپی بنکە
+                    </a>
+
+                    <a href="${match.youtube_url}"
+                       target="_blank"
+                       style="
+                        background:#dc2626;
+                        color:white;
+                        padding:10px 14px;
+                        border-radius:10px;
+                        text-decoration:none;
+                        font-weight:bold;
+                       ">
+                       ▶️ ڤیدیۆ
+                    </a>
+
+                </div>
+
+            </div>
+        `;
+    });
+
+    resultsDiv.innerHTML = html;
+}
+
+        // Remove image
+        removeBtn.addEventListener('click', () => {
+            previewContainer.classList.remove('active');
+            uploadArea.style.display = '';
+            previewImage.src = '';
+            filenameDiv.textContent = '';
+            fileInput.value = '';
+        });
+    </script>
+</body>
+</html>

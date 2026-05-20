@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo up.png">
+    <title>KURD_CLASH</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0f0f1a;
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .header-container {
+            width: 100%;
+            padding: 0 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .header-container {
+                padding: 0 1.5rem;
+            }
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 3.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        @media (min-width: 768px) {
+            .header-content {
+                height: 5rem;
+            }
+        }
+        
+        .logo-link {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            min-width: 0;
+            text-decoration: none;
+        }
+        
+        .logo-img {
+            width: auto;
+            max-width: 60vw;
+            height: 2rem;
+            object-fit: contain;
+            transition: all 0.3s ease;
+        }
+        
+        @media (min-width: 768px) {
+            .logo-img {
+                height: 3.5rem;
+            }
+        }
+        
+        .mobile-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            flex-shrink: 0;
+            margin-left: auto;
+            margin-right: 0.25rem;
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-controls {
+                display: none;
+            }
+        }
+        
+        
+        
+        .desktop-nav {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        @media (min-width: 2350px) {
+            .desktop-nav {
+                display: flex;
+            }
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            text-decoration: none;
+            color: #d1d5db;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .nav-link-highlight-orange {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+            background: rgba(249, 115, 22, 0.2);
+            color: #fdba74;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link-highlight-orange:hover {
+            background: rgba(249, 115, 22, 0.3);
+        }
+        
+        .nav-link-highlight-purple {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.5rem;
+            background: rgba(217, 70, 239, 0.15);
+            color: #d8b4fe;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link-highlight-purple:hover {
+            background: rgba(217, 70, 239, 0.25);
+        }
+        
+        .desktop-actions {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        @media (min-width: 2350px) {
+            .desktop-actions {
+                display: flex;
+            }
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            color: #9ca3af;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-radius: 0.25rem;
+        }
+        
+        .social-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .social-link svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        
+        /* Main Content */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-top: 3.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .main-wrapper {
+                padding-top: 5rem;
+            }
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            flex: 1;
+            padding: 1rem 1rem 2rem;
+            background: linear-gradient(to bottom, #0f172a, #0f172a);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-section {
+                padding: 4rem 2rem 4rem;
+            }
+        }
+        
+        .hero-container {
+            max-width: 80rem;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .hero-title-area {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-title-area {
+                margin-bottom: 3rem;
+            }
+        }
+        
+        .hero-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.25rem;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+        }
+        
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+                margin-bottom: 0.75rem;
+            }
+        }
+        
+        .hero-title span {
+            color: #fb923c;
+        }
+        
+        .hero-subtitle {
+            color: #9ca3af;
+            font-size: 0.75rem;
+            max-width: 42rem;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+        }
+        
+        /* Feature Cards Grid - Now 5 cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.625rem;
+            max-width: 56rem;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 768px) {
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+            }
+        }
+        
+        .feature-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            border: 2px solid;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            min-height: 7.5rem;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        @media (min-width: 768px) {
+            .feature-card {
+                border-radius: 1rem;
+                min-height: 17.5rem;
+            }
+        }
+        
+        .feature-card:hover {
+            transform: scale(1.02) translateY(-0.25rem);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .feature-card-blue {
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4);
+        }
+        
+        .feature-card-orange {
+            border-color: rgba(251, 146, 60, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(249, 115, 22, 0.4);
+        }
+        
+        .feature-card-amber {
+            border-color: rgba(251, 191, 36, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(245, 158, 11, 0.4);
+        }
+        
+        .feature-card-cyan {
+            border-color: rgba(103, 232, 249, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(6, 182, 212, 0.4);
+        }
+        
+        .feature-card-purple {
+            border-color: rgba(192, 132, 252, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(168, 85, 247, 0.4);
+        }
+        
+        .card-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+        }
+        
+        .feature-card:hover .card-bg {
+            transform: scale(1.1);
+        }
+        
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .overlay-blue { background: rgba(30, 58, 138, 0.7); }
+        .overlay-orange { background: rgba(154, 52, 18, 0.7); }
+        .overlay-amber { background: rgba(120, 53, 15, 0.7); }
+        .overlay-cyan { background: rgba(8, 47, 73, 0.7); }
+        .overlay-purple { background: rgba(88, 28, 135, 0.7); }
+        
+        .feature-card:hover .card-overlay {
+            opacity: 0.8;
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0.75rem;
+        }
+        
+        @media (min-width: 768px) {
+            .card-content {
+                padding: 2rem;
+            }
+        }
+        
+        .card-icon-wrapper {
+            backdrop-filter: blur(8px);
+            padding: 0.625rem;
+            border-radius: 0.75rem;
+            margin-bottom: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        @media (min-width: 768px) {
+            .card-icon-wrapper {
+                padding: 1.25rem;
+                border-radius: 1rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        .feature-card:hover .card-icon-wrapper {
+            transform: scale(1.1) rotate(3deg);
+        }
+        
+        .card-icon-blue { background: rgba(59, 130, 246, 0.4); }
+        .card-icon-orange { background: rgba(249, 115, 22, 0.4); }
+        .card-icon-amber { background: rgba(245, 158, 11, 0.4); }
+        .card-icon-cyan { background: rgba(6, 182, 212, 0.4); }
+        .card-icon-purple { background: rgba(168, 85, 247, 0.4); }
+        
+        .card-icon-svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #fff;
+            filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.6));
+        }
+        
+        @media (min-width: 768px) {
+            .card-icon-svg {
+                width: 3.5rem;
+                height: 3.5rem;
+            }
+        }
+        
+        .card-title {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.25rem;
+            text-align: center;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease;
+        }
+        
+        @media (min-width: 768px) {
+            .card-title {
+                font-size: 1.875rem;
+                margin-bottom: 0.75rem;
+            }
+        }
+        
+        .feature-card:hover .card-title {
+            transform: scale(1.05);
+        }
+        
+        .card-description {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.5625rem;
+            text-align: center;
+            max-width: 20rem;
+            line-height: 1.35;
+            filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.6));
+        }
+        
+        @media (min-width: 768px) {
+            .card-description {
+                font-size: 1rem;
+                line-height: 1.625;
+            }
+        }
+        
+        .card-arrow {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 0.5rem;
+            z-index: 20;
+            opacity: 0;
+            transform: translateX(-0.5rem);
+            transition: all 0.3s ease;
+            color: #fff;
+        }
+        
+        @media (min-width: 768px) {
+            .card-arrow {
+                bottom: 1rem;
+                left: 1rem;
+            }
+        }
+        
+        .feature-card:hover .card-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .card-arrow svg {
+            width: 1rem;
+            height: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .card-arrow svg {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+        
+        /* Footer */
+        .footer {
+            position: relative;
+            z-index: 20;
+            width: 100%;
+            background: #1a1a2e;
+            color: #9ca3af;
+            border-top: 1px solid rgba(55, 65, 81, 0.5);
+            padding: 0.5rem 0;
+            flex-shrink: 0;
+        }
+        
+        .footer-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+    
+        
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .footer-social-link {
+            color: #6b7280;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .footer-social-link:hover {
+            color: #fff;
+        }
+        
+        .footer-social-link svg {
+            width: 1rem;
+            height: 1rem;
+        }
+        
+
+        /* Toast Notification Styles */
+#toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    border: 1px solid #444;
+}
+
+#toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+        
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-content">
+                <a href="#" class="logo-link">
+                    <img src="./logo.png" alt="ClashFox" class="logo-img">
+                </a>
+       
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <!-- Hero Section with 5 Feature Cards in Kurdish -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="hero-title-area">
+                   <h1 class="hero-title">
+    بەخێربێیت بۆ 
+    <span><img src="./logo.png" alt="ClashFox" style="vertical-align: middle; height: 1em; margin-left: 10px;"></span>
+</h1>
+                    <p class="hero-subtitle">کۆکردنەوەی چەندین تایبەتمەندی بەهێز بۆ کلاشەکەت لەیەک شوێن</p>
+                </div>
+                
+                <div class="features-grid">
+                    <!-- Card 1: Base Search -->
+                     <a href="base_search.html">
+                    <div class="feature-card feature-card-blue" >
+                        <div class="card-bg" style="background-image: url('/base-finder.webp');"></div>
+                        <div class="card-overlay overlay-blue"></div>
+                        <div class="card-content">
+                            <div class="card-icon-wrapper card-icon-blue">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                            </div>
+                            <h2 class="card-title">دۆزینەوەی بەیس</h2>
+                            <p class="card-description">سکرینشۆتی بەیس ئەپلۆد بکە لینکی بەیسەکە بەدەست بێنە</p>
+                        </div>
+                        <div class="card-arrow">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </div>
+                    </div>
+                    </a>
+                    <!-- Card 2: Attack Finder -->
+                     <a href="attack_finder.html">
+                    <div class="feature-card feature-card-orange">
+                        <div class="card-bg" style="background-image: url('/attack-finder.webp');"></div>
+                        <div class="card-overlay overlay-orange"></div>
+                        <div class="card-content">
+                            <div class="card-icon-wrapper card-icon-orange">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon-svg" viewBox="0 0 24 24"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"></polyline><line x1="13" x2="19" y1="19" y2="13"></line><line x1="16" x2="20" y1="16" y2="20"></line><line x1="19" x2="21" y1="21" y2="19"></line><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"></polyline><line x1="5" x2="9" y1="14" y2="18"></line><line x1="7" x2="4" y1="17" y2="20"></line><line x1="3" x2="5" y1="19" y2="21"></line></svg>
+                            </div>
+                            <h2 class="card-title">دۆزینەوەی ئەتاک</h2>
+                            <p class="card-description">سکرینشۆتی ئەو بەیسە ئەپلۆد بکە کە ئەتەوێ ئەتاکی بۆ بکەی</p>
+                        </div>
+                        <div class="card-arrow">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </div>
+                    </div>
+                    </a>
+                    
+                    <!-- Card 3: Trending Bases -->
+                     <a href="trending_base.html">
+                    <div class="feature-card feature-card-amber">
+                        <div class="card-bg" style="background-image: url('/Trending_bases.webp');"></div>
+                        <div class="card-overlay overlay-amber"></div>
+                        <div class="card-content">
+                            <div class="card-icon-wrapper card-icon-amber">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon-svg" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+                            </div>
+                            <h2 class="card-title">بەیسە باوەکان</h2>
+                            <p class="card-description">ئەو بەیسانە ببینە کە هەفتانە ترێندن</p>
+                        </div>
+                        <div class="card-arrow">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </div>
+                    </div>
+                    </a>
+                    <!-- Card 4: Trending Armies -->
+                     <a href="common_attack.html">
+                    <div class="feature-card feature-card-cyan">
+                        <div class="card-bg" style="background-image: url('/trending armies.webp');"></div>
+                        <div class="card-overlay overlay-cyan"></div>
+                        <div class="card-content">
+                            <div class="card-icon-wrapper card-icon-cyan">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon-svg" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+                            </div>
+                            <h2 class="card-title">ستراتیجیە باوەکان</h2>
+                            <p class="card-description">بینینی ستراتیجیە باوەکان بە بینینی ڤیدیۆ</p>
+                        </div>
+                        <div class="card-arrow">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </div>
+                    </div>
+                    </a>
+                    
+                <a onclick="showToast()" style="cursor: pointer;">
+    <div class="feature-card feature-card-purple">
+        <!-- The rest of your card code remains the same -->
+        <div class="card-bg" style="background-image: url('/weeklybases.webp');"></div>
+        <div class="card-overlay overlay-purple"></div>
+        <div class="card-content">
+            <div class="card-icon-wrapper card-icon-purple">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon-svg" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+            </div>
+            <h2 class="card-title">بەیسەکان</h2>
+            <p class="card-description">بینین و کۆپیکردنی ئەو بەیسانەی ڕۆژانە بڵاوئەکرێنەوە</p>
+        </div>
+        <div class="card-arrow">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+        </div>
+    </div>
+</a>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+    <div class="footer-content">
+
+        <div class="footer-social">
+
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/share/18N1goLyvX/" class="footer-social-link" title="Facebook" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.19 2.23.19v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z"/>
+                </svg>
+            </a>
+
+            <!-- WhatsApp -->
+            <a href="https://wa.me/qr/GMGICZ5HLTGWB1" class="footer-social-link" title="WhatsApp" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.52 3.48A11.86 11.86 0 0 0 12.07 0C5.5 0 .16 5.34.16 11.91c0 2.1.55 4.16 1.6 5.97L0 24l6.3-1.65a11.88 11.88 0 0 0 5.77 1.47h.01c6.57 0 11.91-5.34 11.91-11.91 0-3.18-1.24-6.17-3.47-8.43zM12.08 21.8a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.88 9.88 0 1 1 8.38 4.63zm5.44-7.42c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.64-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.5h-.57c-.2 0-.52.07-.8.37-.27.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.13 3.25 5.16 4.56.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/>
+                </svg>
+            </a>
+
+            <!-- Telegram -->
+            <a href="https://t.me/bilal_maghdid" class="footer-social-link" title="Telegram" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.04 15.47 8.7 20.3c.5 0 .71-.22.97-.48l2.32-2.22 4.8 3.52c.88.48 1.5.23 1.74-.82l3.15-14.77h0c.29-1.35-.49-1.88-1.35-1.56L1.8 10.84c-1.3.5-1.28 1.22-.22 1.55l4.74 1.48L17.3 6.96c.52-.35 1-.16.61.19"/>
+                </svg>
+            </a>
+
+            <!-- Email -->
+            <a href="mailto:bilalmhasan855@gmail.com" class="footer-social-link" title="Email">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                    </path>
+                </svg>
+            </a>
+
+        </div>
+
+    </div>
+</footer>
+<div id="toast">بەمزوانە بەردەست دەبێت!</div>
+<script>
+    function showToast() {
+        var x = document.getElementById("toast");
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+</script>
+</body>
+</html>
